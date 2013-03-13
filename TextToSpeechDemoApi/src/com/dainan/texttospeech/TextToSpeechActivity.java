@@ -38,14 +38,14 @@ public class TextToSpeechActivity extends Activity implements TextToSpeech.OnIni
         super.onCreate(savedInstanceState);
         setContentView(R.layout.text_to_speech);
 
-        // Initialize text-to-speech. This is an asynchronous operation.
-        // The OnInitListener (second argument) is called after initialization completes.
+        // text-to-speechの初期化. 初期化は非同期なオペレーション
+        // 初期化完了後 OnInitListener (第二引数) が呼ばれる
         mTts = new TextToSpeech(this,
             this  // TextToSpeech.OnInitListener
             );
 
-        // The button is disabled in the layout.
-        // It will be enabled upon initialization of the TTS engine.
+        // レイアウトファイル上ではボタンはdisabled状態
+        // TTSエンジン初期化後にenable化
         mAgainButton = (Button) findViewById(R.id.again_button);
 
         mAgainButton.setOnClickListener(new View.OnClickListener() {
@@ -66,32 +66,33 @@ public class TextToSpeechActivity extends Activity implements TextToSpeech.OnIni
         super.onDestroy();
     }
 
-    // Implements TextToSpeech.OnInitListener.
+    // TextToSpeech.OnInitListenerのインプリメント
     public void onInit(int status) {
-        // status can be either TextToSpeech.SUCCESS or TextToSpeech.ERROR.
+        // status はTextToSpeech.SUCCESS or TextToSpeech.ERROR.
         if (status == TextToSpeech.SUCCESS) {
-            // Set preferred language to US english.
-            // Note that a language may not be available, and the result will indicate this.
+            // 優先される言語としてUS englishをセット.
+            // 言語は使用可能ではないかもしれない　resultで確認
             int result = mTts.setLanguage(Locale.US);
+            //Lacle.FRANCEと指定したらどうなるか？？試してみてください！
             // Try this someday for some interesting results.
             // int result mTts.setLanguage(Locale.FRANCE);
             if (result == TextToSpeech.LANG_MISSING_DATA ||
                 result == TextToSpeech.LANG_NOT_SUPPORTED) {
-               // Lanuage data is missing or the language is not supported.
+               // 言語データがない、あるいは言語がサポートされていない。
                 Log.e(TAG, "Language is not available.");
             } else {
                 // Check the documentation for other possible result codes.
                 // For example, the language may be available for the locale,
                 // but not for the specified country and variant.
 
-                // The TTS engine has been successfully initialized.
-                // Allow the user to press the button for the app to speak again.
+                // TTSが成功裏に初期化されたThe TTS
+                // ボタンをenable化して押せるようにする。
                 mAgainButton.setEnabled(true);
-                // Greet the user.
+                // ユーザにあいさつ
                 sayHello();
             }
         } else {
-            // Initialization failed.
+            // 初期化に失敗
             Log.e(TAG, "Could not initialize TextToSpeech.");
         }
     }
@@ -111,8 +112,8 @@ public class TextToSpeechActivity extends Activity implements TextToSpeech.OnIni
         int helloLength = HELLOS.length;
         String hello = HELLOS[RANDOM.nextInt(helloLength)];
         mTts.speak(hello,
-            TextToSpeech.QUEUE_FLUSH,  // Drop all pending entries in the playback queue.
-            null);
+            TextToSpeech.QUEUE_FLUSH,  // プレイバックキューをフラッシュ(他に追加モードもある）
+            null); //エンジンに渡すパラメタ。エンジン対応にキーパラで指定。（通常nullでよい？）
     }
 
 }
