@@ -99,10 +99,10 @@ public class TextToSpeechActivity extends Activity implements TextToSpeech.OnIni
 
     private static final Random RANDOM = new Random();
     private static final String[] HELLOS = {
-      "Hello",
-      "Salutations",
-      "Greetings",
-      "Howdy",
+      "hellow",
+      "how are you",
+      "good bye",
+      "java is easy but groovy is difficult",
       "What's crack-a-lackin?",
       "That explains the stench!"
     };
